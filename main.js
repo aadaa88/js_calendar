@@ -29,27 +29,27 @@ function myCalendar() {
 
     let frameOfCalendar = [];
     const _firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const _firstDateOfFrame = new Date(currentYear, currentMonth,1-_firstDay).getDate();
-    const _lastDateOfFrame = 
-    for (let i=0; i<42; i++){
-        frameOfCalendar[i] = ;
+    const _firstDateOfFrame = new Date(currentYear, currentMonth, 1 - _firstDay).getDate();
+    const _lastDateOfFrame = 2;
+    for (let i = 0; i < 42; i++) {
+        // frameOfCalendar[i] = 3;
     }
 
     const calTable = createTable();
-    main.appendChild(calTable);    
+    main.appendChild(calTable);
 
 }
-function createTable(){
+function createTable() {
     const calTable = document.createElement('table');
     calTable.style.width = '100%';
     calTable.setAttribute('border', '1');
 
     const calTableBody = document.createElement('tbody');
     const thead = document.createElement('thead');
-    
+
     for (let h = 0; h < 7; h++) {
         const headCell = document.createElement('th');
-        const headText = document.createTextNode(new Date(currentYear, currentMonth, h).toLocaleDateString('ko', {weekday:'long'}));
+        const headText = document.createTextNode(new Date(currentYear, currentMonth, h).toLocaleDateString('ko', { weekday: 'long' }));
         headCell.appendChild(headText);
         thead.appendChild(headCell);
     }
@@ -64,7 +64,7 @@ function createTable(){
             let cell = row.insertCell();
             // var cell = document.createElement('td');
             // let cellText = document.createTextNode('{cell ' + sum + '} col: ' + j + ', row: ' + i);
-            
+
             // cell.appendChild(cellText);
             // row.appendChild(cell); // insertCell()를 사용하게 되면 이런씩으로 코드 줄 주릴 수 있음
         }
@@ -106,31 +106,31 @@ function tableCreate() {
 
 var DateDiff = {
 
-    inDays: function(d1, d2) {
+    inDays: function (d1, d2) {
         var t2 = d2.getTime();
         var t1 = d1.getTime();
 
-        return parseInt((t2-t1)/(24*3600*1000));
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
     },
 
-    inWeeks: function(d1, d2) {
+    inWeeks: function (d1, d2) {
         var t2 = d2.getTime();
         var t1 = d1.getTime();
 
-        return parseInt((t2-t1)/(24*3600*1000*7));
+        return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
     },
 
-    inMonths: function(d1, d2) {
+    inMonths: function (d1, d2) {
         var d1Y = d1.getFullYear();
         var d2Y = d2.getFullYear();
         var d1M = d1.getMonth();
         var d2M = d2.getMonth();
 
-        return (d2M+12*d2Y)-(d1M+12*d1Y);
+        return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
     },
 
-    inYears: function(d1, d2) {
-        return d2.getFullYear()-d1.getFullYear();
+    inYears: function (d1, d2) {
+        return d2.getFullYear() - d1.getFullYear();
     }
 };
 
@@ -139,11 +139,11 @@ var dString = "May, 20, 1984";
 var d1 = new Date(dString);
 var d2 = new Date();
 
-console.log("Number of <b>days</b> since "+dString+": "+DateDiff.inDays(d1, d2));
-console.log("Number of <b>weeks</b> since "+dString+": "+DateDiff.inWeeks(d1, d2));
-console.log("Number of <b>months</b> since "+dString+": "+DateDiff.inMonths(d1, d2));
-console.log("Number of <b>years</b> since "+dString+": "+DateDiff.inYears(d1, d2));
 
+console.log("Number of <b>days</b> since " + dString + ": " + DateDiff.inDays(d1, d2));
+console.log("Number of <b>weeks</b> since " + dString + ": " + DateDiff.inWeeks(d1, d2));
+console.log("Number of <b>months</b> since " + dString + ": " + DateDiff.inMonths(d1, d2));
+console.log("Number of <b>years</b> since " + dString + ": " + DateDiff.inYears(d1, d2));
 
 /* Scoping rules
 The main difference is scoping rules. Variables declared by var keyword are scoped to the immediate function body (hence the function scope) while let variables are scoped to the immediate enclosing block denoted by { } (hence the block scope).
@@ -152,18 +152,17 @@ The main difference is scoping rules. Variables declared by var keyword are scop
 /* function run() {
     var foo = "Foo";
     let bar = "Bar";
-    
+
     console.log(foo, bar); // Foo Bar
-    
+
     {
     var moo = "Mooo"
     let baz = "Bazz";
     console.log(moo, baz); // Mooo Bazz
     }
-    
+
     console.log(moo); // Mooo
     console.log(baz); // ReferenceError
-} 
+}
 
 run(); */
-  

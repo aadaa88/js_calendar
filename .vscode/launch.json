@@ -4,7 +4,7 @@
             "type": "pwa-chrome",
             "name": "localhost:5500",
             "request": "launch",
-            "url": "localhost:5500"
+            "url": "file:///home/ada/Dropbox/Project/js_calendar/index.html"
         }
     ]
 }
