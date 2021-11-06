@@ -20,6 +20,7 @@ const currentMonth = date.getMonth();
 const currentDate = date.getDate();
 const currentDay = date.getDay();
 
+
 function myCalendar() {
     //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
     // 1. 날짜정보를 통해 해당 년, 월, 요일 정보 추출
@@ -31,24 +32,25 @@ function myCalendar() {
 
     const main = document.querySelector('.main');
 
-    let frameOfCalendar = [];
-    const _firstDay = new Date(currentYear, currentMonth, 1).getDate();
-    const _lastDay = new Date(currentYear, currentMonth+1, 0 ).getDate();
-    console.log(_lastDay);
-
-    const _firstDateOfFrame = new Date(currentYear, currentMonth, 1 - _firstDay).getDate();
-    const _lastDateOfFrame = 2;
-    
-    for (let i = 0; i < 42; i++) {
-        
-        // frameOfCalendar[i] = 3;
-    }
-
-    const calTable = createTable();
+    const frameOfCalendar = createFrame(date);
+    const calTable = createTable(frameOfCalendar);
     main.appendChild(calTable);
 
 }
-function createTable() {
+function createFrame(date) {
+    const _currentYear = date.getFullYear();
+    const _currentMonth = date.getMonth();
+
+    let _frameOfCalendar = [];
+    const _firstDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
+
+    for (let i = 0; i < 42; i++) {
+        _frameOfCalendar.push(new Date(_currentYear, _currentMonth, 1 - _firstDay + i).getDate());
+    }
+    return _frameOfCalendar;
+}
+
+function createTable(frameOfCalendar) {
     const calTable = document.createElement('table');
     calTable.style.width = '100%';
     calTable.setAttribute('border', '1');
@@ -63,18 +65,18 @@ function createTable() {
         thead.appendChild(headCell);
     }
 
-    // let sum = 0;
+    let sum = 0;
     for (let i = 0; i < 6; i++) {
         const row = calTableBody.insertRow(); // document객채가 공식적으로 html table 택을 다루는 기능을 지원해 주고 있으로 이것을 사용하는 것을 선호합니다.
 
         // var row = document.createElement('tr'); // insertRow()를 사용 안하고도 테이블 생성이 가능함.
         for (let j = 0; j < 7; j++) {
-            // sum++;
             let cell = row.insertCell();
             // var cell = document.createElement('td');
             // let cellText = document.createTextNode('{cell ' + sum + '} col: ' + j + ', row: ' + i);
-
-            // cell.appendChild(cellText);
+            let cellText = document.createTextNode(`${frameOfCalendar[sum]}`);
+            sum++;
+            cell.appendChild(cellText);
             // row.appendChild(cell); // insertCell()를 사용하게 되면 이런씩으로 코드 줄 주릴 수 있음
         }
         // calTableBody.appendChild(row); // insertRow(),insertCell()을 통해 코드량 벌써 2줄씩이나 줄임!
@@ -82,6 +84,8 @@ function createTable() {
 
     let title = document.createElement('caption');
     title.appendChild(document.createTextNode('Generating The Calendar using <table> tag in javascript!'));
+    title.appendChild(document.createElement('br'));
+    title.appendChild(document.createTextNode(date));
 
     calTable.appendChild(title);
     calTable.appendChild(thead);
