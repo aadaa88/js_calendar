@@ -1,3 +1,7 @@
+// WeDataLab Inc.,
+// Created by E. Bat-Amgalan
+// Created date: 2021.11.2
+
 // jshint는 vscode 확장 기능이명 자바스크립트 형식을 맞춰서 코딩 하는 습관에 도움을 주는 것이다.
 /* jshint esversion: 6 */
 /* jshint browser: true */
@@ -28,10 +32,15 @@ function myCalendar() {
     const main = document.querySelector('.main');
 
     let frameOfCalendar = [];
-    const _firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const _firstDay = new Date(currentYear, currentMonth, 1).getDate();
+    const _lastDay = new Date(currentYear, currentMonth+1, 0 ).getDate();
+    console.log(_lastDay);
+
     const _firstDateOfFrame = new Date(currentYear, currentMonth, 1 - _firstDay).getDate();
     const _lastDateOfFrame = 2;
+    
     for (let i = 0; i < 42; i++) {
+        
         // frameOfCalendar[i] = 3;
     }
 
@@ -138,7 +147,6 @@ var dString = "May, 20, 1984";
 
 var d1 = new Date(dString);
 var d2 = new Date();
-
 
 console.log("Number of <b>days</b> since " + dString + ": " + DateDiff.inDays(d1, d2));
 console.log("Number of <b>weeks</b> since " + dString + ": " + DateDiff.inWeeks(d1, d2));
