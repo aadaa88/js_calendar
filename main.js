@@ -16,7 +16,7 @@
 
 const currentDate = new Date();
 
-class CreateCalendar {
+class SimpleCalendar {
     constructor(currentDate = Date()) {
         this.currentDate = currentDate;
         this.calendarFrame = this.createFrame(this.currentDate);
@@ -48,7 +48,7 @@ class CreateCalendar {
 
     }
 }
-console.log(new CreateCalendar(currentDate))
+console.log(new SimpleCalendar(currentDate))
 
 function createFrameOld(currentDate) {
     const _currentYear = currentDate.getFullYear();
