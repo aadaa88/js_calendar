@@ -14,51 +14,94 @@
 
 "use strict";
 
-const currentDate = new Date();
-
 class SimpleCalendar {
-    constructor(currentDate = Date()) {
+
+    constructor(currentDate, tasks = {}) {
         this.currentDate = currentDate;
-        this.calendarFrame = this.createFrame(this.currentDate);
+        this.tasks = tasks;
+        this.currentYear = this.currentDate.getFullYear();
+        this.currentMonth = this.currentDate.getMonth();
+        // 해당 월의 첫번째 요일을 구하기
+        this.firstWeekDay = new Date(this.currentYear, this.currentMonth, 1).getDay(); 
+        // 해당 월의 마지막 날을 구하기
+        this.lastDateOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+
+        // this.calendar = this.createCalendar();
+        // this.calendarFrame = this.getCalendarFrame();
     }
 
-    createFrame() {
-        const _currentYear = this.currentDate.getFullYear();
-        const _currentMonth = this.currentDate.getMonth();
+    get currentDate() {
+        return this._currentDate;
+    }
+    set currentDate(date) {
+        this._currentDate = date instanceof Date ? date : new Date();
+    }
+
+    get tasks() {
+        return this._tasks;
+    }
+
+    set tasks(array){
+        this._tasks = array instanceof Array ? array : new Array();
+    }
+
+    // 한달에 해당 되는 달력을 Date 객체로 생성
+    createCalendar() {
+        this.calendar = {};
+        // 한달을 가리키는 객체 생성
+        for (let i = 0; i < this.lastDateOfMonth; i++) {
+            this.calendar[`${i}`] = new Date(this.currentYear, this.currentMonth, i + 1);
+        }
+        return this.calendar;
+    }
+
+    getCalendarFrame() {
         this.calendarFrame = {};
 
-        const _firstDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
-
         for (let i = 0; i < 42; i++) {
-            this.calendarFrame[`${i}`] = new Date(_currentYear, _currentMonth, 1 - _firstDay + i).getDate();
+            this.calendarFrame[`${i}`] = new Date(this.currentYear, this.currentMonth, 1 - this.firstWeekDay + i);
         }
         return this.calendarFrame;
     }
 
-    addTask() {
-
+    addTask(date, ...tasks) {
+        for (item in tasks) {
+            this.calendarFrame[date]['Task'] = item;
+        }
     }
-    getTask() {
 
+    getTask(){
+        
     }
+
+    getAllTasks(date, index) {
+        return this.calendarFrame[index]
+    }
+
     updateTask() {
 
     }
+
     deleteTask() {
 
     }
 }
-console.log(new SimpleCalendar(currentDate))
+
+const cal1 = new SimpleCalendar(new Date(2011, 1, 28));
+console.log(cal1);
+// cal1.addTask(cu;e, ['task1', 'task2', 'task3']);
+// console.log(cal1.getTask(currentDate));
+
 
 function createFrameOld(currentDate) {
     const _currentYear = currentDate.getFullYear();
     const _currentMonth = currentDate.getMonth();
 
     let _frameOfCalendar = [];
-    const _firstDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
+    const _firstWeekDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
 
     for (let i = 0; i < 42; i++) {
-        _frameOfCalendar.push(new Date(_currentYear, _currentMonth, 1 - _firstDay + i).getDate());
+        _frameOfCalendar.push(new Date(_currentYear, _currentMonth, 1 - _firstWeekDay + i).getDate());
     }
     return _frameOfCalendar;
 }
@@ -72,7 +115,7 @@ function myCalendar() {
     // 5. 테이블을 채우기 
     // 6. 화면 출력
     // 7. encapsulation
-
+    const currentDate = new Date();
 
     const main = document.querySelector('.main');
 
