@@ -14,12 +14,14 @@
 
 "use strict";
 
+// task 데이터를 저장할 객체
 class Task {
-    constructor(date, title, description, status) {
+    constructor(date, title, description, status, author) {
         this.date = date;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.author = author;
     }
     get date() {
         return this._date;
@@ -42,8 +44,14 @@ class Task {
     get status() {
         return this._status;
     }
-    set status(value){
+    set status(value) {
         this._status = value ? value : null;
+    }
+    get author() {
+        return this._author;
+    }
+    set author(value) {
+        this._author = typeof value === 'string' && value ? value : '';
     }
 }
 
@@ -52,12 +60,6 @@ class SimpleCalendar {
         this.currentDate = currentDate;
         // tasks가 리스트를 가지고 있고 그 리스트 안의 객체를 가지며 날짜와 해당 태스크를 담고 있는 리스트가 있습니다.
         this.tasks = tasks;
-        this.currentYear = this.currentDate.getFullYear();
-        this.currentMonth = this.currentDate.getMonth();
-        // 해당 월의 첫번째 요일을 구하기
-        this.firstWeekDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
-        // 해당 월의 마지막 날을 구하기
-        this.lastDateOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
 
         // this.calendar = this.createCalendar();
         // this.calendarFrame = this.getCalendarFrame();
@@ -66,33 +68,35 @@ class SimpleCalendar {
     get currentDate() {
         return this._currentDate;
     }
+
     set currentDate(date) {
         this._currentDate = date instanceof Date ? date : new Date();
-    }
 
-    get tasks() {
-        return this._tasks;
-    }
-
-    set tasks(task) {
-        // this._tasks[`task`] = this._tasks['date']. task['date'] task['tasks'] instanceof Array ? task['tasks'] : new Array();
+        this._currentYear = this._currentDate.getFullYear();
+        this._currentMonth = this._currentDate.getMonth();
+        // 해당 월의 첫번째 요일을 구하기
+        this._firstWeekDay = new Date(this._currentYear, this._currentMonth, 1).getDay();
+        // 해당 월의 마지막 날을 구하기
+        this._lastDateOfMonth = new Date(this._currentYear, this._currentMonth + 1, 0).getDate();
     }
 
     // 한달에 해당 되는 달력을 Date 객체로 생성
-    createCalendar() {
+    createCalendar(date = this._currentDate) {
+        this._currentDate = date instanceof Date() ? date : this._currentDate;
         this.calendar = {};
         // 한달을 가리키는 객체 생성
-        for (let i = 0; i < this.lastDateOfMonth; i++) {
-            this.calendar[`${i}`] = new Date(this.currentYear, this.currentMonth, i + 1);
+        for (let i = 0; i < this._lastDateOfMonth; i++) {
+            this.calendar[`${i}`] = new Date(this._currentYear, this._currentMonth, i + 1);
         }
         return this.calendar;
     }
 
-    getCalendarFrame(date = new Date()) {
+    getCalendarFrame(date = this._currentDate) {
+        this._currentDate = date instanceof Date() ? date : this._currentDate;
         this.calendarFrame = {};
 
         for (let i = 0; i < 42; i++) {
-            this.calendarFrame[`${i}`] = new Date(this.currentYear, this.currentMonth, 1 - this.firstWeekDay + i);
+            this.calendarFrame[`${i}`] = new Date(this._currentYear, this._currentMonth, 1 - this._firstWeekDay + i);
         }
         return this.calendarFrame;
     }
@@ -105,7 +109,7 @@ class SimpleCalendar {
 
     }
 
-    getAllTasks(date, index) {
+    getAllTasks(_date, index) {
         return this.calendarFrame[index]
     }
 
