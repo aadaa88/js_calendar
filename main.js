@@ -14,15 +14,48 @@
 
 "use strict";
 
-class SimpleCalendar {
+class Task {
+    constructor(date, title, description, status) {
+        this.date = date;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+    get date() {
+        return this._date;
+    }
+    set date(value) {
+        this._date = value instanceof Date ? value : {};
+    }
+    get title() {
+        return this._title;
+    }
+    set title(value) {
+        this._title = typeof value === 'string' && value ? value : '';
+    }
+    get description() {
+        return this._description;
+    }
+    set description(value) {
+        this._description = typeof value === 'string' && value ? value : '';
+    }
+    get status() {
+        return this._status;
+    }
+    set status(value){
+        this._status = value ? value : null;
+    }
+}
 
-    constructor(currentDate, tasks = {}) {
+class SimpleCalendar {
+    constructor(currentDate = new Date(), tasks = [new Task()]) {
         this.currentDate = currentDate;
+        // tasks가 리스트를 가지고 있고 그 리스트 안의 객체를 가지며 날짜와 해당 태스크를 담고 있는 리스트가 있습니다.
         this.tasks = tasks;
         this.currentYear = this.currentDate.getFullYear();
         this.currentMonth = this.currentDate.getMonth();
         // 해당 월의 첫번째 요일을 구하기
-        this.firstWeekDay = new Date(this.currentYear, this.currentMonth, 1).getDay(); 
+        this.firstWeekDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
         // 해당 월의 마지막 날을 구하기
         this.lastDateOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
 
@@ -41,8 +74,8 @@ class SimpleCalendar {
         return this._tasks;
     }
 
-    set tasks(array){
-        this._tasks = array instanceof Array ? array : new Array();
+    set tasks(task) {
+        // this._tasks[`task`] = this._tasks['date']. task['date'] task['tasks'] instanceof Array ? task['tasks'] : new Array();
     }
 
     // 한달에 해당 되는 달력을 Date 객체로 생성
@@ -55,7 +88,7 @@ class SimpleCalendar {
         return this.calendar;
     }
 
-    getCalendarFrame() {
+    getCalendarFrame(date = new Date()) {
         this.calendarFrame = {};
 
         for (let i = 0; i < 42; i++) {
@@ -64,14 +97,12 @@ class SimpleCalendar {
         return this.calendarFrame;
     }
 
-    addTask(date, ...tasks) {
-        for (item in tasks) {
-            this.calendarFrame[date]['Task'] = item;
-        }
+    createTask(date = new Date(), ...tasks) {
+        return tasks.forEach(item => this.tasks['date']['tasks'] = item);
     }
 
-    getTask(){
-        
+    getTask() {
+
     }
 
     getAllTasks(date, index) {
@@ -120,7 +151,7 @@ function myCalendar() {
     const main = document.querySelector('.main');
 
     const frameOfCalendar = createFrameOld(currentDate);
-    const calTable = createTable(currentDate, frameOfCalendar, 'ja-JP');
+    const calTable = createTable(currentDate, frameOfCalendar, 'ru');
     main.appendChild(calTable);
 
 }
