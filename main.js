@@ -8,11 +8,10 @@
 /* jslint node: true */
 /* jshint strict: false */
 
-// 모든 스크립트를 스트릭트 모드 syntax에 맞춰서 한다
-// 자바스크립트는 아주 유영한(flexible) 프로그래밍 언어다.
-// flexible == dangerous (개인적으로 "flexible === dangerous"이런 표현은 적합하지 않음)
-
 "use strict";
+
+
+///////////////// ** JS Calendar Main section ** /////////////////
 
 // task 데이터를 저장할 객체
 class Task {
@@ -101,7 +100,7 @@ class SimpleCalendar {
         return this.calendarFrame;
     }
 
-    createTask(date = new Date(), ...tasks) {
+    addTask(date = new Date(), ...tasks) {
         return tasks.forEach(item => this.tasks['date']['tasks'] = item);
     }
 
@@ -127,19 +126,6 @@ console.log(cal1);
 // cal1.addTask(cu;e, ['task1', 'task2', 'task3']);
 // console.log(cal1.getTask(currentDate));
 
-
-function createFrameOld(currentDate) {
-    const _currentYear = currentDate.getFullYear();
-    const _currentMonth = currentDate.getMonth();
-
-    let _frameOfCalendar = [];
-    const _firstWeekDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
-
-    for (let i = 0; i < 42; i++) {
-        _frameOfCalendar.push(new Date(_currentYear, _currentMonth, 1 - _firstWeekDay + i).getDate());
-    }
-    return _frameOfCalendar;
-}
 
 function myCalendar() {
     //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
@@ -226,6 +212,28 @@ function tableCreate() {
     }
     body.appendChild(tbl);
 }
+
+///////////////// ** Experiment section ** /////////////////
+// 이 부분에 달력을 만들면서 기능 혹은 동적 실습 했던 것들을 모아 두는 곳임.
+
+function createFrameOld(currentDate) {
+    const _currentYear = currentDate.getFullYear();
+    const _currentMonth = currentDate.getMonth();
+
+    let _frameOfCalendar = [];
+    const _firstWeekDay = new Date(_currentYear, _currentMonth, 1).getDay(); // 해당 월의 첫번째 요일을 추출
+
+    for (let i = 0; i < 42; i++) {
+        _frameOfCalendar.push(new Date(_currentYear, _currentMonth, 1 - _firstWeekDay + i).getDate());
+    }
+    return _frameOfCalendar;
+}
+
+///////////////// ** Learning section ** /////////////////
+
+// 모든 스크립트를 스트릭트 모드 syntax에 맞춰서 한다
+// 자바스크립트는 아주 유영한(flexible) 프로그래밍 언어다.
+// flexible == dangerous (개인적으로 "flexible === dangerous"이런 표현은 적합하지 않음)
 
 var DateDiff = {
 
