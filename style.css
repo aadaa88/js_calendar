@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    scroll-behavior: smooth;
+    background-color: #131313;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+h1 a {
+    font-size: xx-large;
+    color: dodgerblue;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+p {
+    position: absolute;
+    color: rgba(70, 130, 180, 0.4);
+    font-size: medium;
+    text-decoration: none;
+    text-transform: none;
+    z-index: -1;
+}
+
+.main {
+    display: none;
+    box-shadow: 0px 6px 8px rgba(19, 19, 19, 0.6);
+}
+
+.main:target {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main .calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 0;
+    height: 0;
+    color: #fff;
+    background-color: #191919;
+    animation: 1s grow ease forwards;
+    text-align: center;
+}
+
+.main::before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 0px;
+    left: 0;
+    bottom: 10px;
+    background: #BF2E97;
+    transition: all .5s ease;
+}
+
+.main .calendar:hover::before {
+    width: 100%;
+}
+
+.main .close::after {
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    display: flex;
+    z-index: 1;
+    font-size: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: #BF2E97;
+    color: #fff;
+    content: "×";
+    cursor: pointer;
+    opacity: 0;
+    animation: 1s fadeIn ease forwards .5s;
+}
