@@ -95,18 +95,8 @@ class SimpleCalendar {
         this._selectedTask = selectTask instanceof Task ? selectTask : {}
     }
 
-    // 한달에 해당 되는 달력을 Date 객체로 생성
+    // 한달에 해당 되는 달력을 Date 객체로 생성하고 반환
     createCalendar(date = this._currentDate) {
-        this._currentDate = date instanceof Date ? date : this._currentDate;
-        this.calendar = {};
-        // 한달을 가리키는 객체 생성
-        for (let i = 0; i < this._lastDateOfMonth; i++) {
-            this.calendar[`${i}`] = new Date(this._currentYear, this._currentMonth, i + 1);
-        }
-        return this.calendar;
-    }
-
-    getCalendarFrame(date = this._currentDate) {
         this._currentDate = date instanceof Date ? date : this._currentDate;
         this.calendarFrame = {};
 
@@ -137,39 +127,6 @@ class SimpleCalendar {
     }
 }
 
-let sample_datas;
-sample_datas = generateSampleDate(5, 5, 20);
-const cal1 = new SimpleCalendar();
-cal1.addTask(sample_datas);
-cal1.getTask(sample_datas); ///
-console.log(cal1);
-// cal1.addTask(cu;e, ['task1', 'task2', 'task3']);
-// console.log(cal1.getTask(currentDate));
-
-const main = document.querySelector('.main');
-
-function myCalendar() {
-    //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
-    // 1. 날짜정보를 통해 해당 년, 월, 요일 정보 추출
-    // 2. 해당 월이 몇 일날이 있는지 추출
-    // 3. 한달 전체를 표현 할 수 있는 테이블 생성 6x7(42cell)
-    // 4. 날짜 데이터 프레임 생성
-    // 5. 테이블을 채우기 
-    // 6. 화면 출력
-    // 7. encapsulation
-    const currentDate = new Date();
-
-    // html 페이지의 버디 선택
-
-    const frameOfCalendar = createFrameOld(currentDate);
-    const calTable = createTable(currentDate, frameOfCalendar, 'ko');
-
-    calTable.className = 'calendar';
-    // calTable.style.width = '100%';
-
-    main.appendChild(calTable);
-}
-
 function createTable(currentDate, frameOfCalendar, locale = 'ko-KR') {
     const calTable = document.createElement('table');
     const calTableBody = document.createElement('tbody');
@@ -192,14 +149,17 @@ function createTable(currentDate, frameOfCalendar, locale = 'ko-KR') {
             let cell = row.insertCell();
             // var cell = document.createElement('td');
             // let cellText = document.createTextNode('{cell ' + idx + '} col: ' + j + ', row: ' + i);
-            let cellText = document.createTextNode(`${frameOfCalendar[idx]}`);
-            idx++;
-            cell.setAttribute('class', 'tCell');
+            let cellText = document.createTextNode(`${frameOfCalendar[idx].getDate()}`);
+            cell.setAttribute('class',
+                `CalendarCell day-${frameOfCalendar[idx].getDate()} 
+                ${frameOfCalendar[idx].getDate() == currentDate.getDate() ? 'today' : ''}`);
             cell.appendChild(cellText);
             // row.appendChild(cell); // insertCell()를 사용하게 되면 이런씩으로 코드 줄 주릴 수 있음
+            idx++;
         }
         // calTableBody.appendChild(row); // insertRow(),insertCell()을 통해 코드량 벌써 2줄씩이나 줄임!
     }
+
 
     let title = document.createElement('caption');
     let caption = document.createElement('div');
@@ -216,6 +176,74 @@ function createTable(currentDate, frameOfCalendar, locale = 'ko-KR') {
 
     return calTable;
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+/* start of JS Calendar  */
+
+// html에서 body택을 선택해서 BodyTag 변수에 저장;
+const BodyTag = document.getElementsByTagName('body');
+const HeaderTag = document.createElement('header');
+const title = document.createElement('h1');
+title.createTextNode('JS Calendar');
+
+let sample_datas;
+sample_datas = generateSampleDate(5, 5, 20);
+const cal1 = new SimpleCalendar();
+cal1.addTask(sample_datas);
+cal1.getTask(sample_datas); ///
+console.log(cal1);
+// cal1.addTask(cu;e, ['task1', 'task2', 'task3']);
+// console.log(cal1.getTask(currentDate));
+
+
+function myCalendar() {
+    //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
+    // 1. 날짜정보를 통해 해당 년, 월, 요일 정보 추출
+    // 2. 해당 월이 몇 일날이 있는지 추출
+    // 3. 한달 전체를 표현 할 수 있는 테이블 생성 6x7(42cell)
+    // 4. 날짜 데이터 프레임 생성
+    // 5. 테이블을 채우기 
+    // 6. 화면 출력
+    // 7. encapsulation
+    const main = document.querySelector('body');
+
+    const currentDate = new Date();
+
+    // html 페이지의 버디 선택
+    const calMain = new SimpleCalendar(new Date());
+    const frameOfCalendar = calMain.createCalendar(currentDate);
+    const calTable = createTable(currentDate, frameOfCalendar, 'ko');
+
+    calTable.className = 'calendar';
+    // calTable.style.width = '100%';
+
+    main.appendChild(calTable);
+}
+
+/* End of JS Calendar */
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -287,12 +315,119 @@ function generateSampleDate(dataLength = 10, titleLength = 5, descLength = 20, y
 
 
 
-///////////////// ** Learning section ** /////////////////
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////// ** Learning section ** /////////////////
 // 모든 스크립트를 스트릭트 모드 syntax에 맞춰서 한다
 // 자바스크립트는 아주 유영한(flexible) 프로그래밍 언어다.
 // flexible == dangerous (개인적으로 "flexible === dangerous"이런 표현은 적합하지 않음)
 
+/* Scoping rules
+The main difference is scoping rules. Variables declared by var keyword are scoped to the immediate function body (hence the function scope) while let variables are scoped to the immediate enclosing block denoted by { } (hence the block scope).
+*/
+
+/* function run() {
+    var foo = "Foo";
+    let bar = "Bar";
+
+    console.log(foo, bar); // Foo Bar
+
+    {
+    var moo = "Mooo"
+    let baz = "Bazz";
+    console.log(moo, baz); // Mooo Bazz
+    }
+
+    console.log(moo); // Mooo
+    console.log(baz); // ReferenceError
+}
+
+run(); */
+
+
+///////////////// ** Tag Study  ** /////////////////
+// box 택들을 각각 할당;
+/*
+console.log('Tag들 할당');
+const HeadTag = document.createElement('head'); // HTML 문서의 메타데이터 혹은 해당 페이지 내용에 대한 정보를 가지는 택.
+const StyleTag = document.createElement('style'); // 해당 문서의 스타일을 정의 하는 댁 (각 택의 자식으로도 할당 가능)
+const ScriptTag = document.createElement('script'); // 해당 문서에서 사용될 스크립트를 정의하는 택
+// Body tag가 이미 할당 되어 있어서 주석 처리 했음!
+const BodyTag = document.createElement('body'); // 브라우져 화면에 표시 및 표시 되지 않은 모든 정보를 가지는 택
+const HeaderTag = document.createElement('header'); // 해당 페이지의 헤더 구겅 요소를 담는 택
+const NavTag = document.createElement('nav'); // 내비게이션을 정의 하는 택
+const AsideTag = document.createElement('aside'); // 사이드메뉴를 정의하는 택
+const MainTag = document.createElement('main'); // 해다 문서가 정달하고자하는 주 내용을 가지는 택 - The unique content of the page.
+const SectionTag = document.createElement('section'); // 주 영역을 정의하는 택
+const FooterTag = document.createElement('footer'); // 하단 부분 정의하는 택
+const ArticleTag = document.createElement('article'); // 주 영역 안 구성 요소 정의하는 택
+const DivTag = document.createElement('div'); // 줄 블록 택
+const SpanTag = document.createElement('span'); // 단어 혹은 하개의 아이탬 블록
+const FormTag = document.createElement('form'); // 데이터 전송을 위한 택
+// 택들은 in-line level과 block level의 2가지로 나뉜다.
+
+// item 택을 할당;
+console.log('Item들 할당');
+const aTag = document.createElement('a');
+const buttonTag = document.createElement('button');
+const inputTag = document.createElement('input');
+const labelTag = document.createElement('label');
+const imageTag = document.createElement('img');
+const videoTag = document.createElement('video');
+const audioTag = document.createElement('audio');
+const mapTag = document.createElement('map');
+const canvasTag = document.createElement('canvas');
+const tableTag = document.createElement('table');
+const h1 = document.createElement('h1');
+const h2 = document.createElement('h2');
+const p = document.createElement('p');
+
+DivTag.appendChild(labelTag);
+ArticleTag.append(h1, h2, p, inputTag, labelTag, DivTag);
+MainTag.append(ArticleTag, DivTag, buttonTag, SpanTag, FormTag);
+SectionTag.append(ArticleTag, DivTag, ArticleTag, ArticleTag);
+
+document.getElementsByTagName('body')[0].append(HeaderTag, NavTag, AsideTag, MainTag, FooterTag);
+
+StyleTag.appendChild(document.createTextNode('* {background: red;}'));
+ScriptTag.appendChild(document.createTextNode('console.log(document)'));
+HeadTag.append(StyleTag, ScriptTag);
+document.documentElement.append(HeadTag, BodyTag);
+*/
+
+
+///////////////// ** Date object Study ** /////////////////
 var DateDiff = {
     inDays: function(d1, d2) {
         var t2 = d2.getTime();
@@ -326,29 +461,8 @@ var d2 = new Date();
 // // console.log("Number of <b>months</b> since " + dString + ": " + DateDiff.inMonths(d1, d2));
 // console.log("Number of <b>years</b> since " + dString + ": " + DateDiff.inYears(d1, d2));
 
-/* Scoping rules
-The main difference is scoping rules. Variables declared by var keyword are scoped to the immediate function body (hence the function scope) while let variables are scoped to the immediate enclosing block denoted by { } (hence the block scope).
-*/
 
-/* function run() {
-    var foo = "Foo";
-    let bar = "Bar";
-
-    console.log(foo, bar); // Foo Bar
-
-    {
-    var moo = "Mooo"
-    let baz = "Bazz";
-    console.log(moo, baz); // Mooo Bazz
-    }
-
-    console.log(moo); // Mooo
-    console.log(baz); // ReferenceError
-}
-
-run(); */
-
-///////////////// ** Creating table ** /////////////////
+///////////////// ** Table study ** /////////////////
 
 function tableCreate() {
     const body = document.body,
@@ -375,165 +489,3 @@ function tableCreate() {
 }
 
 ///////////////// ** Style Covering ** /////////////////
-
-// {/* <html> */}
-// {/* <head> */}
-// {/* <style type="text/css"> */}
-// {/* * { */}
-margin: 0;
-padding: 0;
-}
-// {/* .container { */}
-min - height: 100 vh;
-display: flex;
-justify - content: center;
-align - items: center;
-scroll - behavior: smooth;
-background: #131313;
-                font-family: 'Helvetica Neue', sans-serif;
-            }
-            // {/* h1 a { */}
-                font-size: 80px;
-                color: # BF2E97;
-text - decoration: none;
-text - transform: uppercase;
-}
-// {/* .popover { */}
-display: none;
-box - shadow: 0 px 6 px 8 px rgba(19, 19, 19, .7);
-}
-// {/* .popover:target { */}
-position: absolute;
-right: 0;
-top: 0;
-width: 100 % ;
-height: 100 % ;
-display: flex;
-align - items: center;
-justify - content: center;
-}
-// {/* .popover .content { */}
-display: flex;
-align - items: center;
-justify - content: center;
-position: relative;
-width: 0;
-height: 0;
-color: #fff;
-background - color: #191919;
-                animation: 1s grow ease forwards;
-                text-align: center;
-            }
-            // {/* .nav_list { */}
-                list-style-type: none;
-            }
-            // {/* .nav_list a { */}
-                text-decoration: none;
-                font-size: 50px;
-                color: # fff;
-}
-// {/* .nav_list_item { */}
-height: 100 % ;
-overflow: hidden;
-}
-// {/* .nav_list li { */}
-padding: 15 px 0;
-text - transform: uppercase;
-transform: translateY(200 px);
-opacity: 0;
-animation: 2 s slideUp ease forwards .5 s;
-position: relative;
-}
-// {/* .nav_list li::before { */}
-content: '';
-position: absolute;
-height: 2 px;
-width: 0 px;
-left: 0;
-bottom: 10 px;
-background: #BF2E97;
-transition: all .5 s ease;
-}
-// {/* .nav_list li:hover:before { */}
-width: 100 % ;
-}
-// {/* .popover p { */}
-padding: 50 px;
-opacity: 0;
-animation: 1 s fadeIn ease forwards 1 s;
-}
-// {/* .popover .close::after { */}
-right: 0;
-top: 0;
-width: 50 px;
-height: 50 px;
-position: absolute;
-display: flex;
-z - index: 1;
-font - size: 30 px;
-align - items: center;
-justify - content: center;
-background - color: #BF2E97;
-color: #fff;
-content: "×";
-cursor: pointer;
-opacity: 0;
-animation: 1 s fadeIn ease forwards .5 s;
-}
-// {/* @keyframes grow { */}
-100 % {
-    height: 90 % ;
-    width: 90 % ;
-}
-}
-// {/* @keyframes fadeIn { */}
-100 % {
-    opacity: 1;
-}
-}
-// {/* @keyframes slideUp { */}
-100 % {
-    transform: translateY(0);
-    opacity: 1;
-}
-}
-// {/* </style> */}
-// {/* </head> */}
-// {/*  */}
-// {/* <body> */}
-// {/* <div class="container"> */}
-// {/* <h1> */}
-// {/* <a href="#menu">Click me</a> */}
-// {/* </h1> */}
-// {/*  */}
-// {/* <div class="popover" id="menu"> */}
-// {/* <div class='content'> */}
-// {/* <a href="#" class="close"></a> */}
-// {/* <div class='nav'> */}
-// {/* <ul class='nav_list'> */}
-// {/*  */}
-// {/* <div class='nav_list_item'> */}
-// {/* <li><a href="#">Home</a></li> */}
-// {/* </div> */}
-// {/* <div class='nav_list_item'> */}
-// {/* <li><a href="#">About</a></li> */}
-// {/* </div> */}
-// {/* <div class='nav_list_item'> */}
-// {/* <li><a href="#">Products</a></li> */}
-// {/* </div> */}
-// {/* <div class='nav_list_item'> */}
-// {/* <li><a href="#">Services</a></li> */}
-// {/* </div> */}
-// {/* <div class='nav_list_item'> */}
-// {/* <li><a href="#">Contact</a></li> */}
-// {/* </div> */}
-// {/*  */}
-// {/* </ul> */}
-// {/* </div> */}
-// {/* </div> */}
-// {/* </div> */}
-// {/* </div> */}
-// {/*  */}
-// {/* </body> */}
-// {/*  */}
-// {/* </html> */}

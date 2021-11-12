@@ -1,6 +1,25 @@
 * {
-    margin: 0;
+    margin: 5pt;
     padding: 0;
+}
+
+h1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+}
+
+a {
+    font-size: xx-large;
+    color: dodgerblue;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+p {
+    color: rgba(70, 100, 150, 0.7);
+    font-size: 1.2rem;
+    text-transform: capitalize;
 }
 
 body {
@@ -12,25 +31,17 @@ body {
     font-family: 'Helvetica Neue', sans-serif;
 }
 
-h1 a {
-    font-size: xx-large;
-    color: dodgerblue;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-p {
-    position: absolute;
-    color: rgba(70, 130, 180, 0.4);
-    font-size: medium;
-    text-decoration: none;
-    text-transform: none;
-    z-index: -1;
-}
-
 .main {
-    display: none;
+    /* display: none; */
     box-shadow: 0px 6px 8px rgba(19, 19, 19, 0.6);
+    position: absolute;
+    justify-content: center;
+}
+
+.main .calendar {
+    /* display: none; */
+    background: rgba(70, 100, 150, 0.7);
+    position: absolute;
 }
 
 .main:target {
@@ -42,19 +53,6 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.main .calendar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 0;
-    height: 0;
-    color: #fff;
-    background-color: #191919;
-    animation: 1s grow ease forwards;
-    text-align: center;
 }
 
 .main::before {
