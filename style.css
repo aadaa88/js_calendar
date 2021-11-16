@@ -1,90 +1,56 @@
 * {
-    margin: 5pt;
-    padding: 0;
+    border: 1px solid rgba(0, 255, 0, 0.5);
+    padding: 2px;
+    margin: 2px;
 }
 
-h1 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: space-between;
-}
-
-a {
-    font-size: xx-large;
-    color: dodgerblue;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-p {
-    color: rgba(70, 100, 150, 0.7);
-    font-size: 1.2rem;
-    text-transform: capitalize;
+#headerBackground {
+    content: repeat;
+    position: relative;
+    top: 0;
+    z-index: -1;
+    color: rgba(100, 100, 100, 0.5);
+    /* transform: rotate(300deg); */
+    /* -webkit-transform: rotate(300deg); */
 }
 
 body {
-    min-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    background-color: cornsilk;
+}
+
+header {
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    position: absolute;
+}
+
+nav {
+    grid-column: 1 / 5;
+    grid-row: 2 / 3;
+}
+
+#NavigationBar {
     display: flex;
-    justify-content: center;
-    scroll-behavior: smooth;
-    background-color: #131313;
-    font-family: 'Helvetica Neue', sans-serif;
 }
 
-.main {
-    /* display: none; */
-    box-shadow: 0px 6px 8px rgba(19, 19, 19, 0.6);
-    position: absolute;
-    justify-content: center;
+aside {
+    grid-column: 1 / 2;
+    grid-row: 3 / auto;
 }
 
-.main .calendar {
-    /* display: none; */
-    background: rgba(70, 100, 150, 0.7);
-    position: absolute;
+section {
+    grid-column: 2 / 5;
+    grid-row: 3 / auto;
 }
 
-.main:target {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+section main {
+    background-color: antiquewhite;
 }
 
-.main::before {
-    content: '';
-    position: absolute;
-    height: 2px;
-    width: 0px;
-    left: 0;
-    bottom: 10px;
-    background: #BF2E97;
-    transition: all .5s ease;
-}
-
-.main .calendar:hover::before {
-    width: 100%;
-}
-
-.main .close::after {
-    right: 0;
-    top: 0;
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    display: flex;
-    z-index: 1;
-    font-size: 30px;
-    align-items: center;
-    justify-content: center;
-    background-color: #BF2E97;
-    color: #fff;
-    content: "×";
-    cursor: pointer;
-    opacity: 0;
-    animation: 1s fadeIn ease forwards .5s;
+footer {
+    grid-column: 1 / 5;
+    grid-row: 4;
 }

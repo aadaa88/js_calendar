@@ -182,44 +182,104 @@ function createTable(currentDate, frameOfCalendar, locale = 'ko-KR') {
 /* start of JS Calendar  */
 
 // html에서 body택을 선택해서 BodyTag 변수에 저장;
-const BodyTag = document.getElementsByTagName('body');
+const sampleText = 'Excepteur sunt cillum veniam officia nulla eu ut minim. Deserunt ullamco aliquip veniam anim excepteur deserunt veniam aute. Do Lorem id consectetur proident cillum.';
+
+const currentDate = new Date();
+const mainCalendar = new SimpleCalendar(currentDate);
+const calendarSkeleton = mainCalendar.createCalendar(currentDate);
+const calendarBody = createTable(currentDate, calendarSkeleton, 'ko');
+
+// const BodyTag = document.querySelector('body');
+document.body = document.createElement('body');
+
 const HeaderTag = document.createElement('header');
+const NavTag = document.createElement('nav');
+const AsideTag = document.createElement('aside');
+const SectionTag = document.createElement('section');
+const MainTag = document.createElement('main');
+const FooterTag = document.createElement('footer');
+
+// 헤더 부분 생성
 const title = document.createElement('h1');
-title.createTextNode('JS Calendar');
+title.appendChild(document.createTextNode('JS Calendar'));
+title.setAttribute('id', 'title');
+const description = document.createElement('span');
+description.appendChild(document.createTextNode('Generating The Calendar using <table> tag in javascript!'));
+description.setAttribute('id', 'titleDescription');
+const bgText = document.createElement('span');
+bgText.appendChild(document.createTextNode(sampleText));
+bgText.setAttribute('id', 'headerBackground');
+HeaderTag.append(title, description, bgText);
+
+// 네비게이션 부분 생성
+const navDiv = document.createElement('div');
+const menuButton = document.createElement('div');
+menuButton.appendChild(document.createTextNode('menu'));
+const prevMonth = document.createElement('div');
+prevMonth.appendChild(document.createTextNode('prev'));
+const nextMonth = document.createElement('div');
+nextMonth.appendChild(document.createTextNode('next'));
+const currentYear = document.createElement('div');
+currentYear.appendChild(document.createTextNode(currentDate.getFullYear()));
+const gotoToday = document.createElement('div');
+gotoToday.appendChild(document.createTextNode('today'));
+navDiv.append(menuButton, gotoToday, prevMonth, currentYear, nextMonth)
+navDiv.setAttribute('id', 'NavigationBar');
+NavTag.append(navDiv);
+
+// 사이드 메뉴 생성
+const createButton = document.createElement('div');
+createButton.appendChild(document.createTextNode('create task'));
+const calendarThumbnail = document.createElement('div');
+calendarThumbnail.append(document.createTextNode('thumbnail'), calendarBody);
+const calendarList = document.createElement('div');
+const calendarslist = document.createTextNode('calendar');
+const ul = document.createElement('ul');
+const li = document.createElement('li');
+li.appendChild(calendarslist);
+ul.append(li, li.cloneNode('?'), li.cloneNode('?'));
+calendarList.appendChild(ul);
+
+const asideFooter = document.createElement('div');
+const asideFootText = document.createTextNode('asideFooter...')
+asideFooter.appendChild(asideFootText);
+AsideTag.append(createButton, calendarThumbnail, calendarList, asideFooter);
+
+// 섹션 > 메인 부분 생성
+const mainSection = document.createElement('div');
+mainSection.appendChild(calendarBody.cloneNode(true));
+MainTag.appendChild(mainSection);
+const CreatedDate = document.createElement('span');
+CreatedDate.appendChild(document.createTextNode(currentDate));
+SectionTag.append(MainTag, CreatedDate);
+
+// 푸터 생성
+const copyright = document.createElement('div');
+copyright.appendChild(document.createTextNode('Created by E. Bat-Amgalan \nWeDataLab Inc. \n2021.11.15'));
+FooterTag.appendChild(copyright);
+
+// 화면 출력
+document.body.append(HeaderTag, NavTag, AsideTag, SectionTag, FooterTag);
+
+////// highlight //////
+HeaderTag.appendChild(document.createTextNode('this is header tag'));
+NavTag.appendChild(document.createTextNode('this is navigation tag'));
+AsideTag.appendChild(document.createTextNode('this is aside tag'));
+SectionTag.appendChild(document.createTextNode('this is section tag'));
+MainTag.appendChild(document.createTextNode('this is main tag'));
+FooterTag.appendChild(document.createTextNode('this is footer tag'));
+///////////////////////
 
 let sample_datas;
 sample_datas = generateSampleDate(5, 5, 20);
+
 const cal1 = new SimpleCalendar();
 cal1.addTask(sample_datas);
-cal1.getTask(sample_datas); ///
-console.log(cal1);
+cal1.getTask(sample_datas); //
+// console.log(cal1);
 // cal1.addTask(cu;e, ['task1', 'task2', 'task3']);
 // console.log(cal1.getTask(currentDate));
 
-
-function myCalendar() {
-    //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
-    // 1. 날짜정보를 통해 해당 년, 월, 요일 정보 추출
-    // 2. 해당 월이 몇 일날이 있는지 추출
-    // 3. 한달 전체를 표현 할 수 있는 테이블 생성 6x7(42cell)
-    // 4. 날짜 데이터 프레임 생성
-    // 5. 테이블을 채우기 
-    // 6. 화면 출력
-    // 7. encapsulation
-    const main = document.querySelector('body');
-
-    const currentDate = new Date();
-
-    // html 페이지의 버디 선택
-    const calMain = new SimpleCalendar(new Date());
-    const frameOfCalendar = calMain.createCalendar(currentDate);
-    const calTable = createTable(currentDate, frameOfCalendar, 'ko');
-
-    calTable.className = 'calendar';
-    // calTable.style.width = '100%';
-
-    main.appendChild(calTable);
-}
 
 /* End of JS Calendar */
 //////////////////////////////////////////////////////////////////////////////
@@ -251,6 +311,32 @@ function myCalendar() {
 ///////////////// ** Experiment section ** /////////////////
 // 이 부분에 달력을 만들면서 기능 혹은 동적 실습 했던 것들을 모아 두는 곳임.
 
+/*
+// Old method creating main form
+function myCalendar() {
+    //   입력으로 Data() 받으며 날짜 정보 받을 수 있음
+    // 1. 날짜정보를 통해 해당 년, 월, 요일 정보 추출
+    // 2. 해당 월이 몇 일날이 있는지 추출
+    // 3. 한달 전체를 표현 할 수 있는 테이블 생성 6x7(42cell)
+    // 4. 날짜 데이터 프레임 생성
+    // 5. 테이블을 채우기 
+    // 6. 화면 출력
+    // 7. encapsulation
+    const main = document.querySelector('body');
+
+    const currentDate = new Date();
+
+    // html 페이지의 버디 선택
+    const calMain = new SimpleCalendar(new Date());
+    const frameOfCalendar = calMain.createCalendar(currentDate);
+    const calTable = createTable(currentDate, frameOfCalendar, 'ko');
+
+    calTable.className = 'calendar';
+    // calTable.style.width = '100%';
+
+    main.appendChild(calTable);
+}
+*/
 
 // 달력 틀을 만들기 위한 데이터 생성해 주는 함수
 function createFrameOld(currentDate) {
@@ -310,7 +396,7 @@ function generateSampleDate(dataLength = 10, titleLength = 5, descLength = 20, y
             Array.from(Array(2), item => item = author[Math.floor(Math.random() * author.length)]).join(' ')
         );
     }
-    console.log(sampleTasks)
+    console.log(sampleTasks);
 }
 
 
@@ -388,7 +474,7 @@ const BodyTag = document.createElement('body'); // 브라우져 화면에 표시
 const HeaderTag = document.createElement('header'); // 해당 페이지의 헤더 구겅 요소를 담는 택
 const NavTag = document.createElement('nav'); // 내비게이션을 정의 하는 택
 const AsideTag = document.createElement('aside'); // 사이드메뉴를 정의하는 택
-const MainTag = document.createElement('main'); // 해다 문서가 정달하고자하는 주 내용을 가지는 택 - The unique content of the page.
+const MainTag = document.createElement('main'); // 해당 문서가 정달하고자하는 주 내용을 가지는 택 - The unique content of the page.
 const SectionTag = document.createElement('section'); // 주 영역을 정의하는 택
 const FooterTag = document.createElement('footer'); // 하단 부분 정의하는 택
 const ArticleTag = document.createElement('article'); // 주 영역 안 구성 요소 정의하는 택
